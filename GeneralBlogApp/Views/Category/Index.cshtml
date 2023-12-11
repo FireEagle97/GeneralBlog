@@ -1,0 +1,126 @@
+﻿@inject IHttpContextAccessor context;
+@using GeneralBlogApp.ViewModels;
+@model IEnumerable<CategoryVM>
+
+@{
+	ViewData["Title"] = "Category Home Page";
+	// var archivedCatList = (List<CLK_BlogAdmin.ViewModels.CategoryVM>)ViewBag.ArchivedCatList;
+}
+<section role="main" class="content-body">
+
+	<!-- start: page -->
+	<section class="card">
+		<header class="card-header">
+			<h2 class="card-title">Categories</h2>
+		</header>
+		<div class="tabs">
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<button class="nav-link active" id="active-tab" data-bs-target="#active" role="tab" type="button" data-bs-toggle="tab" aria-controls="active" aria-selected="true">Active</button>
+				</li>
+				<li class="nav-item" role="presentation">
+					<button class="nav-link" id="archived-tab" data-bs-target="#archived" role="tab" type="button" data-bs-toggle="tab" aria-controls="active" aria-selected="false">Archived</button>
+				</li>
+			</ul>
+			<div class="tab-content">
+				<div id="active" class="tab-pane active" role="tabpanel" aria-labelledby="active-tab">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="mb-3">
+									<a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+										<i class="fas fa-plus"></i> &nbsp;
+										Create New Category
+									</a>
+								</div>
+							</div>
+						</div>
+						<table class="table table-bordered table-striped mb-0" id="datatable-default">
+							<thead>
+								<tr>
+									<th>Name</th>
+					@* 				<th>Created At</th>
+									<th>Created By</th>
+									<th>Last Modified At</th>
+									<th>Last Modfied By</th> *@
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var obj in Model)
+								{
+
+									<tr data-item-id=@obj.Category.CatId>
+										<td>@obj.Category.Name</td>
+								@* 		<td>@obj.Category.CreatedAt</td>
+										<td>@obj.Category.CreatedBy</td>
+										<td>@obj.Category.LastModifiedAt</td>
+										<td>@obj.Category.LastModifiedBy</td> *@
+										<td>
+											<div class="w-80 btn-group" role="group">
+												<a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Category.Id" class="btn btn-primary">
+													<i class="fas fa-pencil-alt"></i>
+													&nbsp; Edit
+												</a>
+											</div>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			@* 	<div id="archived" class="tab-pane" role="tabpanel" aria-labelledby="archived-tab">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="mb-3">
+									<a asp-controller="Category" asp-action="Create" class="btn btn-primary">
+										<i class="fas fa-plus"></i> &nbsp;
+										Create New Category test
+									</a>
+								</div>
+							</div>
+						</div>
+						<table class="table table-bordered table-striped mb-0" id="datatable-default">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Banner URL</th>
+									<th>Created At</th>
+									<th>Created By</th>
+									<th>Last Modified At</th>
+									<th>Last Modfied By</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var obj in archivedCatList)
+								{
+
+									<tr data-item-id=@obj.Id>
+										<td>@obj.Name</td>
+										<td>@obj.Category.BannerUrl</td>
+										<td>@obj.Category.CreatedAt</td>
+										<td>@obj.Category.CreatedBy</td>
+										<td>@obj.Category.LastModifiedAt</td>
+										<td>@obj.Category.LastModifiedBy</td>
+										<td>
+											<div class="w-80 btn-group" role="group">
+												<a asp-controller="Category" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary">
+													<i class="fas fa-pencil-alt"></i>
+													&nbsp; Edit
+												</a>
+											</div>
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					</div>
+				</div> *@
+			</div>
+		</div>
+	</section>
+	<!-- end: page -->
+</section>
+
+
