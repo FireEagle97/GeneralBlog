@@ -62,7 +62,29 @@
     <!-- end: page -->
 </section>
 @section Scripts{
+    <script asp-src-include="~/site.js"></script>
+    <script>
+        
+        let tagManager = new TagManager(".tag-box ul", "input", ".details span", 10);
+        tagManager.input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+        $('#createCatForm').submit(function (event) {
+            // Add hidden input to store tags array in the form data
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'MetaKeywords',
+                value: JSON.stringify(tagManager.tags)
+            }).appendTo('#createCatForm');
+
+            // Uncomment the line below to prevent the form from actually submitting
+            // event.preventDefault();
+        });
+    </script>
     @{
+   
     <partial name="_ValidationScriptsPartial" />
 
     }
