@@ -63,7 +63,8 @@ namespace GeneralBlogApp.Controllers
 				};
 				_db.Categories.Add(InputUser);
 				_db.SaveChanges();
-				return RedirectToAction("Index");
+                TempData["success"] = "Category created successfully";
+                return RedirectToAction("Index");
 			}
 			return View(obj);
 
@@ -100,6 +101,7 @@ namespace GeneralBlogApp.Controllers
                     InputToBeEdited.MetaDescription = obj.Category.MetaDescription;
                     _db.Categories.Update(InputToBeEdited);
                     _db.SaveChanges();
+                    TempData["success"] = "Category edited successfully";
                     return RedirectToAction("Edit", new { id = obj.Category.Id });
 
                 }
