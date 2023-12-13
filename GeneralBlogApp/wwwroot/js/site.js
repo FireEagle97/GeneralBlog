@@ -11,7 +11,7 @@
     }
 
     init() {
-        //this.input.addEventListener("keyup", this.addTag.bind(this));
+        this.input.addEventListener("keyup", this.addTag.bind(this));
         this.createTag();
         // Add any additional initialization logic here
     }

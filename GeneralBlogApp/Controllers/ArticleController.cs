@@ -1,6 +1,7 @@
 ﻿using GeneralBlogApp.Models;
 using GeneralBlogApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GeneralBlogApp.Controllers
 {
@@ -10,11 +11,13 @@ namespace GeneralBlogApp.Controllers
 		private readonly IWebHostEnvironment _hostEnvironment;
 		private readonly IHttpContextAccessor _httpContext;
 		private IEnumerable<Article>? _articleList;
+		private IEnumerable<Category>? _categoryList;
 		public ArticleController(ApplicationContext db, IWebHostEnvironment hostEnvironment, IHttpContextAccessor httpContext) {
             _db = db;
             _hostEnvironment = hostEnvironment;
             _httpContext = httpContext;
             _articleList = _db.Articles.ToList();
+			_categoryList = _db.Categories.ToList();
         }
         public IActionResult Index()
         {
@@ -47,6 +50,21 @@ namespace GeneralBlogApp.Controllers
 			}
 			return categoryName;
 		}
+		public IActionResult Create()
+		{
+			var categoryList = _categoryList.Select(
+				category => new SelectListItem
+				{
+					Text = category.Name,
+					Value = category.Id.ToString()
 
+				});
+			ArticleVM articleObj = new ArticleVM
+			{
+				CategoryList = categoryList
+
+			};
+			return View(articleObj);
+		}
 	}
 }
