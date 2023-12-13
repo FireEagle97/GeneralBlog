@@ -1,24 +1,25 @@
 ﻿class TagManager {
-    constructor(ulSelector, inputSelector, countNumbSelector, maxTags) {
+    constructor(ulSelector, inputSelector, countNumbSelector, maxTags, tagsList) {
         this.ul = document.querySelector(ulSelector);
         this.input = this.ul.querySelector(inputSelector);
 /*        this.countNumb = document.querySelector(countNumbSelector);*/
         this.maxTags = maxTags || 10;
-        this.tags = [];
+        this.tags = tagsList == null ? [] : tagsList;
 
         // Initialize the tag manager
         this.init();
     }
 
     init() {
-        this.input.addEventListener("keyup", this.addTag.bind(this));
+        //this.input.addEventListener("keyup", this.addTag.bind(this));
+        this.createTag();
         // Add any additional initialization logic here
     }
 
     createTag() {
         this.ul.querySelectorAll("li").forEach(li => li.remove());
         this.tags.slice().reverse().forEach(tag => {
-            let liTag = `<li>${tag}<i class="fa-solid fa-xmark" onclick="removeTag(this, '${tag}')"></i></li>`;
+            let liTag = `<li>${tag}<i class="fa-solid fa-xmark" onclick="tagManager.removeTag(this, '${tag}')"></i></li>`;
             this.ul.insertAdjacentHTML("afterbegin", liTag);
         });
         /*this.countTags();*/

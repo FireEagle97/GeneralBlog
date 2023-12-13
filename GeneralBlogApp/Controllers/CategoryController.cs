@@ -85,5 +85,27 @@ namespace GeneralBlogApp.Controllers
 				return View();
 			}
 		}
-	}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(CategoryVM obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var InputToBeEdited = _db.Categories.Find(obj.Category.Id);
+                if (InputToBeEdited != null)
+                {
+                    
+                    InputToBeEdited.Name = obj.Category.Name;
+                    InputToBeEdited.MetaKeywords = String.Join(",", obj.MetaKeywords);
+                    InputToBeEdited.MetaDescription = obj.Category.MetaDescription;
+                    _db.Categories.Update(InputToBeEdited);
+                    _db.SaveChanges();
+                    return RedirectToAction("Edit", new { id = obj.Category.Id });
+
+                }
+
+            }
+            return View(obj);
+        }
+    }
 }

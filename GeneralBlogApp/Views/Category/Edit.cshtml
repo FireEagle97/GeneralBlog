@@ -1,6 +1,6 @@
 ﻿@model GeneralBlogApp.ViewModels.CategoryVM
 @{
-    ViewData["Title"] = "Create Category Page";
+    ViewData["Title"] = "Edit Category Page";
 }
 
 <section role="main" class="content-body">
@@ -13,7 +13,8 @@
                     <h2 class="card-title text-primary">Edit Category</h2>
                 </header>
                 <div class="card-body">
-                    <form class="form-horizontal form-bordered" id="createCatForm" asp-action="Create" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal form-bordered" id="editCatForm" asp-action="Edit" method="post" enctype="multipart/form-data">
+                        <input asp-for="@Model.Category.Id" hidden/>
                         <div class="form-group row pb-3">
                             <label class="col-lg-3 control-label text-lg-end pt-2">Category Name</label>
                             <div class="col-lg-6">
@@ -25,7 +26,7 @@
                         <div class="form-group row pb-3">
                             <label class="col-lg-3 control-label text-lg-end pt-2" for="textareaDefault">Meta Description</label>
                             <div class="col-lg-6">
-                                <textarea asp-for="Category.MetaDescription" class="form-control" rows="3" data-plugin-maxlength maxlength="140"></textarea>
+                                <textarea asp-for="Category.MetaDescription" class="form-control" rows="3" maxlength="140"></textarea>
                             </div>
                         </div>
                         <div class="form-group row pb-3">
@@ -46,7 +47,7 @@
                             </div>
                         </div>
                         <div class="form-group text-center pb-2">
-                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <input type="submit" value="Edit" class="btn btn-primary" />
                             <a asp-controller="Category" asp-action="Index" class="btn btn-secondary ms-2" style="width:150px">
                                 Back to List
                             </a>
@@ -63,20 +64,25 @@
 </section>
 @section Scripts{
     <script>
-        let tagsList = document.querySelector(".tag-box ul");
-        let tagsInput = tagsList.querySelector("input");
-        var keywords = @Html.Raw(Json.Serialize(Model.Category.MetaKeywords));
-        var keywordsList = JSON.parse(keywords);
-        function createTags() {
-            tagsList.querySelectorAll("li").forEach(li => li.remove());
-            keywordsList.slice().reverse().forEach(tag => {
-                let liTag = `<li>${tag}<i class="fa-solid fa-xmark" onclick="removeTag(this, '${tag}')"></i></li>`;
-                tagsList.insertAdjacentHTML("afterbegin", liTag);
-            })
-            /*countTags();*/
-        }
-        createTags()
+        var keywords = JSON.parse(@Html.Raw(Json.Serialize(Model.Category.MetaKeywords)));
+        let tagManager = new TagManager(".tag-box ul", "input", ".details span", 10, keywords);
+        console.log(tagManager.tags);
+        tagManager.input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                tagManager.addTag(e);
+               
+            }
+        });
+        $('#editCatForm').submit(function (event) {
+            // Add hidden input to store tags array in the form data
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'MetaKeywords',
+                value: JSON.stringify(tagManager.tags)
+            }).appendTo('#editCatForm');
 
+        });
     </script>
     @{
         <partial name="_ValidationScriptsPartial" />
