@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace CLK_BlogAdmin.ViewModels
+namespace GeneralBlogApp.ViewModels
 {
 	public class ArticleVM
 	{
@@ -13,7 +13,7 @@ namespace CLK_BlogAdmin.ViewModels
 		public string Title { get; set; } = string.Empty;
 		[Required(ErrorMessage = "required", AllowEmptyStrings = false)]
 		public int CategoryId { get; set; }
-		public Article Article { get; set; }
+		public Article? Article { get; set; }
 		public string? CategoryName { get; set; }
 		//public string? AuthorDisplayName { get; set; }
 		public IFormFile? MainImageFile { get; set; }

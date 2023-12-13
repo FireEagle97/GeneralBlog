@@ -26,14 +26,14 @@
 					</div>
 					<div class="d-flex flex-row">
 						<div class="pb-3" id="search-bar">
-							<form asp-controller="Article" asp-action="Index">
+							<form asp-controller="Article" asp-action="Index" style="margin-top:1.5rem;">
 								<div class="d-flex flex-row">
 									<input type="submit" class="btn btn-primary rounded-left" id="search-btn" value="Search">
 									<input type="text" class="form-control rounded-right" id="search-input" name="searchStr" value="@ViewData["CurrentFilter"]" />
 								</div>
 							</form>
 						</div>
-						<div class="pb-3">
+						<div class="pb-3 ps-3">
 							<label class="control-label text-lg-end pt-2">Order by:</label>
 							<form asp-action="Index">
 								<select name="sortOrder" id="order-input">
