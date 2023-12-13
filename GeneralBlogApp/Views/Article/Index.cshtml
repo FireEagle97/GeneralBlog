@@ -1,0 +1,162 @@
+﻿@model List<GeneralBlogApp.ViewModels.ArticleVM>
+
+@{
+	ViewData["Title"] = "Article Home Page";
+	//var archivedArtList = ViewBag.ArchivedArtList;
+	//var publishedArtList = ViewBag.PublishedArtList;
+	// var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+	// var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+}
+<section role="main" class="content-body">
+
+	<!-- start: page -->
+	<section class="card">
+		<header class="card-header">
+			<h2 class="card-title">Articles</h2>
+		</header>
+		<div class="card-body">
+			<div class="d-flex flex-row">
+				<div class="pb-3">
+					<div class="mb-3">
+						<a asp-controller="Article" asp-action="Create" class="btn btn-primary">
+							<i class="fas fa-plus"></i> &nbsp;
+							Create New Article
+						</a>
+					</div>
+					<div class="d-flex flex-row">
+						<div class="pb-3" id="search-bar">
+							<form asp-controller="Article" asp-action="Index">
+								<div class="d-flex flex-row">
+									<input type="submit" class="btn btn-primary rounded-left" id="search-btn" value="Search">
+									<input type="text" class="form-control rounded-right" id="search-input" name="searchStr" value="@ViewData["CurrentFilter"]" />
+								</div>
+							</form>
+						</div>
+						<div class="pb-3">
+							<label class="control-label text-lg-end pt-2">Order by:</label>
+							<form asp-action="Index">
+								<select name="sortOrder" id="order-input">
+									<option disabled selected>---Select an option---</option>
+									<option value="category_desc">
+										category Z-A
+									</option>
+									<option value="category_asc">
+										category A-Z
+									</option>
+									<option value="publishDate_asc">
+										publish date ascending
+									</option>
+									<option value="publishDate_desc">
+										publish date descending
+									</option>
+								</select>
+								<input type="submit" class="btn btn-primary rounded-left order-btn" value="Order" />
+							</form>
+						</div>
+						<div class="pb-3 ps-3">
+							<label class="control-label text-lg-end pt-2">Filter by:</label>
+							<form asp-action="Index">
+								<select name="sortOrder" id="filter-input">
+									<option disabled selected>---Select an option---</option>
+									<option value="published">
+										Published Articles
+									</option>
+									<option value="archived">
+										Archived Articles
+									</option>
+									<option value="draft">
+										Draft Articles
+									</option>
+								</select>
+								<input type="submit" class="btn btn-primary rounded-left order-btn" value="Filter" />
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<table class="table table-bordered table-striped mb-0" id="datatable-default">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Category</th>
+@* 						<th>Published At</th>
+						<th>Published By</th> *@
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var obj in Model)
+					{
+
+						<tr data-item-id=@obj.Id>
+							<td>@obj.Title</td>
+							<td>@obj.CategoryName</td>
+	@* 						<td>@obj.Article.PublishedAt</td>
+							<td>@obj.Article.PublishedBy</td> *@
+							<td>
+								<div class="w-40 btn-group table-btn" role="group">
+									<a asp-controller="Article" asp-action="Edit" asp-route-id="@obj.Id" class="btn btn-primary">
+										<i class="fas fa-pencil-alt"></i>
+										&nbsp; Edit Info
+									</a>
+								</div>
+								<div class="w-40 btn-group table-btn" role="group">
+									<a asp-controller="Block" asp-action="Index" asp-route-articleId="@obj.Id" class="btn btn-primary">
+										<i class="fas fa-eye"></i>
+										&nbsp; Show Blocks
+									</a>
+								</div>
+								<div class="w-40 btn-group table-btn" role="group">
+									<a asp-controller="Source" asp-action="Create" asp-route-articleId="@obj.Id" class="btn btn-primary">
+										<i class="fas fa-eye"></i>
+										&nbsp; Show Sources
+									</a>
+								</div>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+	@* 		<div class="d-flex flex-row justify-content-center pagination">
+				<div id="btn-prev">
+					<a asp-action="Index"
+					   asp-route-sortOrder="@ViewData["CurrentSort"]"
+					   asp-route-pageNumber="@(Model.PageIndex - 1)"
+					   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+					   class="btn pagination-btn p-2 @prevDisabled">
+						<i class="fa-solid fa-arrow-left-long me-2"></i>
+						Previous
+					</a>
+				</div>
+				<div id="btn-pages">
+					@for (var i = 0; i < Model.TotalPages; i++)
+					{
+						int index = i + 1;
+						<a asp-action="Index"
+						   asp-route-sortOrder="@ViewData["CurrentSort"]"
+						   asp-route-pageNumber=@index.ToString()
+						   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+						   class="btn btn-link p-2" style="text-decoration:none;">
+							@index.ToString()
+						</a>
+					}
+				</div>
+				<div id="btn-next">
+					<a asp-action="Index"
+					   asp-route-sortOrder="@ViewData["CurrentSort"]"
+					   asp-route-pageNumber="@(Model.PageIndex + 1)"
+					   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+					   class="btn p-2 pagination-btn @nextDisabled">
+						Next
+						<i class="fa-solid fa-arrow-right-long ms-2"></i>
+					</a>
+				</div>
+			</div> *@
+		</div>
+	</section>
+	<!-- end: page -->
+</section>
+
+
+
