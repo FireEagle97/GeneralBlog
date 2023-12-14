@@ -5,6 +5,10 @@
       "PackagePath": "staticwebassets\\GeneralBlogApp.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\danym\\source\\repos\\GeneralBlog\\GeneralBlogApp\\wwwroot\\assets\\article\\banners\\art_banner12142023_1.png",
+      "PackagePath": "staticwebassets\\assets\\article\\banners\\art_banner12142023_1.png"
+    },
+    {
       "Id": "C:\\Users\\danym\\source\\repos\\GeneralBlog\\GeneralBlogApp\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

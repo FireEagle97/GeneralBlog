@@ -1,0 +1,144 @@
+﻿@model GeneralBlogApp.ViewModels.ArticleVM
+
+@{
+    ViewData["Title"] = "Edit Article";
+    // var categoryList = (IEnumerable<SelectListItem>)ViewBag.CategoryList;
+    // var articleList = (IEnumerable<SelectListItem>)ViewBag.ArticleList;
+}
+
+<section role="main" class="content-body">
+
+    <!-- start: page -->
+    <div class="row">
+        <div class="col-10">
+            <section class="card">
+                <header class="card-header">
+                    <h2 class="card-title text-primary">Edit Article</h2>
+                </header>
+                <div class="card-body">
+                    <form class="form-horizontal form-bordered" id="editArtForm" method="post" enctype="multipart/form-data">
+                        <input asp-for="Id" value="@Model.Id" hidden/>
+                        <div class="form-group row pb-3">
+                            <label asp-for="Title" class="col-lg-3 control-label text-lg-end pt-2"></label>
+                            <div class="col-lg-6">
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label class="col-lg-3 control-label text-lg-end pt-2">Category</label>
+                            <div class="col-lg-6">
+                                <select asp-for="CategoryId" class="form-control form-select" asp-items="@Model.CategoryList" style="text-align:left;">
+                                    <option selected disabled>---Select a category---</option>
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label class="col-lg-3 control-label text-lg-end pt-2 form-label">Main Image</label>
+                            <div class="col-lg-6">
+                                <input class="form-control" type="file" asp-for="MainImageFile">
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label class="col-lg-3 control-label text-lg-end pt-2 form-label">Main Image Alt Tag</label>
+                            <div class="col-lg-6">
+                                <input class="form-control" type="text" asp-for="Article.MainImageAltTag">
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label class="col-lg-3 control-label text-lg-end pt-2 form-label" data-plugin-maxlength maxlength="250">Summary</label>
+                            <div class="col-lg-6">
+                                <textarea asp-for="Article.Summary" id="summary" class="form-control">Start typing...</textarea>
+                                <span id="total-characters"></span>
+                            </div>
+                        </div>
+                        @*                       <div class="form-group row pb-3">
+                        <label class="col-lg-3 control-label text-lg-end pt-2" for="textareaDefault">Author Name</label>
+                        <div class="col-lg-6">
+                        <input asp-for="Article.AuthorDisplayName" type="text" class="form-control" />
+                        <span style="font-size:12px;">default author name is "Contact Lens King"</span>
+                        </div>
+                        </div> *@
+                        <div class="form-group row pb-3">
+                            <label class="col-lg-3 control-label text-lg-end pt-2">Meta Keywords</label>
+                            <div class="col-lg-6">
+                                <div class="content">
+                                    <p>Please press Enter after each tag</p>
+                                    <div class="tag-box">
+                                        <ul>
+                                            <input type="text" />
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label class="col-lg-3 control-label text-lg-end pt-2" for="textareaDefault">Meta Description</label>
+                            <div class="col-lg-6">
+                                <textarea asp-for="Article.MetaDescription" class="form-control" rows="3" data-plugin-maxlength maxlength="400"></textarea>
+                                <span asp-validation-for="Article.MetaDescription" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-group row pb-3">
+                            <label class="col-lg-3 control-label text-lg-end pt-2" for="textareaDefault">Meta Title</label>
+                            <div class="col-lg-6">
+                                <input asp-for="Article.MetaTitle" type="text" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group text-center pb-2">
+                            <input type="submit" value="Edit" class="btn btn-primary" style="width:150px">
+                            <a asp-controller="Article" asp-action="Index" class="btn btn-secondary ms-2" style="width:150px">
+                                Back to List
+                            </a>
+                        </div>
+                    </form>
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- end: page -->
+</section>
+
+@section Scripts{
+    <script asp-src-include="~/site.js"></script>
+    <script>
+        tinymce.init({
+            selector: '#summary',
+            height: 300,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks | ' +
+                'bold italic backcolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+        });
+        var keywords = JSON.parse(@Html.Raw(Json.Serialize(Model.Article.MetaKeywords)));
+        let tagManager = new TagManager(".tag-box ul", "input", ".details span", 10, keywords);
+        tagManager.input.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+            }
+        });
+        $('#editArtForm').submit(function (event) {
+            // Add hidden input to store tags array in the form data
+            $('<input>').attr({
+                type: 'hidden',
+                name: 'MetaKeywords',
+                value: JSON.stringify(tagManager.tags)
+            }).appendTo('#editArtForm');
+
+        });
+    </script>
+    @{
+        <partial name="_ValidationScriptsPartial" />
+
+    }
+}

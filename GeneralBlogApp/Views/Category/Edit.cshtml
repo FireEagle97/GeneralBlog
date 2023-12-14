@@ -66,7 +66,6 @@
     <script>
         var keywords = JSON.parse(@Html.Raw(Json.Serialize(Model.Category.MetaKeywords)));
         let tagManager = new TagManager(".tag-box ul", "input", ".details span", 10, keywords);
-        console.log(tagManager.tags);
         tagManager.input.addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();

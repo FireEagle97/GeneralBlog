@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "QrRobU6FtU6HtZ+vxJE3fTjdsnppnNpPAXvCK+CXiO4=",
+  "Hash": "4tulp5c6t0wo2xFPebBy6tn0jtIxACQ1zmLd5MNKb+s=",
   "Source": "GeneralBlogApp",
   "BasePath": "_content/GeneralBlogApp",
   "Mode": "Default",
@@ -49,6 +49,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\danym\\source\\repos\\GeneralBlog\\GeneralBlogApp\\obj\\Debug\\net7.0\\scopedcss\\projectbundle\\GeneralBlogApp.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\danym\\source\\repos\\GeneralBlog\\GeneralBlogApp\\wwwroot\\assets\\article\\banners\\art_banner12142023_1.png",
+      "SourceId": "GeneralBlogApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\danym\\source\\repos\\GeneralBlog\\GeneralBlogApp\\wwwroot\\",
+      "BasePath": "_content/GeneralBlogApp",
+      "RelativePath": "assets/article/banners/art_banner12142023_1.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\assets\\article\\banners\\art_banner12142023_1.png"
     },
     {
       "Identity": "C:\\Users\\danym\\source\\repos\\GeneralBlog\\GeneralBlogApp\\wwwroot\\css\\site.css",

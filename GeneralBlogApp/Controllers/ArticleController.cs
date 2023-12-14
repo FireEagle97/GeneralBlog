@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace GeneralBlogApp.Controllers
 {
@@ -142,6 +143,121 @@ namespace GeneralBlogApp.Controllers
             }
             return View(obj);
 
+        }
+        public IActionResult Edit(int? id)
+        {
+            var categoryList = _categoryList.Select(
+                    u => new SelectListItem
+                    {
+                        Text = u.Name,
+                        Value = u.Id.ToString()
+                    });
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var objArticleFromDB = _db.Articles.Find(id);
+            if (objArticleFromDB == null)
+            {
+                return NotFound();
+            }
+            var objArticleVM = new ArticleVM
+            {
+                Id = objArticleFromDB.Id,
+                Article = objArticleFromDB,
+                Title = objArticleFromDB.Title,
+                CategoryId = objArticleFromDB.CatId,
+                MetaKeywords = objArticleFromDB.MetaKeywords?.Split(','),
+                CategoryList = categoryList,
+
+            };
+            return View(objArticleVM);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ArticleVM obj)
+        {
+            if (ModelState.IsValid)
+            {
+                //try
+                //{
+                var InputToBeEdited = _db.Articles.Find(obj.Id);
+                if (InputToBeEdited != null)
+                {
+                    //Upload new Banner File
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    if (obj.MainImageFile != null)
+                    {
+                        //check invalid chars
+                        string fileName = "art_banner" + DateTime.Now.ToString("MMddyyyy") + "_" + obj.Id;
+                        var uploads = Path.Combine(wwwRootPath, @"assets\article\banners");
+                        var extension = Path.GetExtension(obj.MainImageFile.FileName);
+
+                        using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
+                        {
+                            obj.MainImageFile.CopyTo(fileStreams);
+                        }
+                        obj.Article.MainImageFileName = fileName + extension;
+                        obj.Article.MainImageUrl = @"\assets\article\banners\" + fileName + extension;
+                        obj.Article.MainImageUploadDate = DateTime.Now;
+                        InputToBeEdited.MainImageFileName = obj.Article.MainImageFileName;
+                        InputToBeEdited.MainImageUrl = obj.Article.MainImageUrl;
+                        InputToBeEdited.MainImageUploadDate = obj.Article.MainImageUploadDate;
+                    }
+                    InputToBeEdited.Title = obj.Title;
+                    InputToBeEdited.CatId = obj.CategoryId;
+                    InputToBeEdited.MainImageAltTag = obj.Article.MainImageAltTag;
+                    InputToBeEdited.Summary = obj.Article.Summary;
+                    InputToBeEdited.IsPublished = obj.Article.IsPublished;
+                    InputToBeEdited.IsArchived = obj.Article.IsArchived;
+                    InputToBeEdited.MetaKeywords = String.Join(",", obj.MetaKeywords);
+                    InputToBeEdited.MetaDescription = obj.Article.MetaDescription;
+                    InputToBeEdited.MetaTitle = obj.Article.MetaTitle;
+                    //InputToBeEdited.Slug = articleSlug.Replace(" ", "-");
+                    //if (InputToBeEdited.Published)
+                    //{
+                    //    DateTime publishDate = DateTime.Now;
+                    //    InputToBeEdited.PublishedAt = new DateTime(publishDate.Year, publishDate.Month, publishDate.Day);
+                    //    InputToBeEdited.PublishedBy = userObj.FirstName + " " + userObj.LastName;
+                    //    InputToBeEdited.Archived = false;
+                    //}
+                    //else
+                    //{
+                    //    InputToBeEdited.PublishedAt = null;
+                    //    InputToBeEdited.PublishedBy = string.Empty;
+                    //    InputToBeEdited.Published = false;
+                    //}
+                    _db.Articles.Update(InputToBeEdited);
+                    _db.SaveChanges();
+                    return RedirectToAction("Edit", new { id = obj.Id });
+
+
+                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    string strBody = String.Format("Date/Time: {0}<br/>Url: {1}<br/>Error: {2}<br/>Stack Trace: {3}", DateTime.Now.ToString(), HttpContext.Request.GetDisplayUrl(), ex.Message, ex.StackTrace);
+                //    MailData mailData = new MailData
+                //    {
+                //        Receiver = _configuration["AdminEmails"],
+                //        Subject = "Exception occured in LernaAdmin Application",
+                //        Body = strBody
+                //    };
+                //    bool result = await _mail.SendAsync(mailData, new System.Threading.CancellationToken());
+
+                //    if (result)
+                //    {
+                //        ViewBag.status = "success";
+                //    }
+                //    else
+                //    {
+                //        ViewBag.status = "error";
+                //    }
+                //}
+
+            }
+            return View(obj);
         }
     }
 }
