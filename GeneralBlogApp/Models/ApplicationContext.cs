@@ -23,11 +23,8 @@ public partial class ApplicationContext : DbContext
     {
         modelBuilder.Entity<Article>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Article");
+            entity.ToTable("Article");
 
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.MainImageAltTag).HasMaxLength(100);
             entity.Property(e => e.MainImageFileName).HasMaxLength(100);
             entity.Property(e => e.MainImageUploadDate).HasColumnType("datetime");
@@ -45,16 +42,13 @@ public partial class ApplicationContext : DbContext
 
         modelBuilder.Entity<Block>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Block");
+            entity.ToTable("Block");
 
             entity.Property(e => e.BlockOrder).HasDefaultValueSql("((1))");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.CreatedBy)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
             entity.Property(e => e.ImageAltTag).HasMaxLength(50);
             entity.Property(e => e.ImageFileName).HasMaxLength(50);
             entity.Property(e => e.ImageUploadedBy)

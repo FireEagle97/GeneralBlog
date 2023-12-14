@@ -16,7 +16,7 @@
                     <h2 class="card-title text-primary">Create Article</h2>
                 </header>
                 <div class="card-body">
-                    <form class="form-horizontal form-bordered" method="post" enctype="multipart/form-data">
+                    <form class="form-horizontal form-bordered" id="createArtForm" method="post" enctype="multipart/form-data">
                         <div class="form-group row pb-3">
                             <label asp-for="Title" class="col-lg-3 control-label text-lg-end pt-2"></label>
                             <div class="col-lg-6">
@@ -126,13 +126,13 @@
                 e.preventDefault();
             }
         });
-        $('#createCatForm').submit(function (event) {
+        $('#createArtForm').submit(function (event) {
             // Add hidden input to store tags array in the form data
             $('<input>').attr({
                 type: 'hidden',
                 name: 'MetaKeywords',
                 value: JSON.stringify(tagManager.tags)
-            }).appendTo('#createCatForm');
+            }).appendTo('#createArtForm');
 
         });
     </script>
